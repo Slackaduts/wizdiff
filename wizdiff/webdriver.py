@@ -1,7 +1,8 @@
 import asyncio
 import struct
 import gzip
-from typing import Tuple, Enum
+from typing import Tuple
+from enum import Enum
 
 import aiohttp
 from loguru import logger
@@ -20,7 +21,7 @@ class WebDriver:
         self.session = aiohttp.ClientSession()
 
     @staticmethod
-    async def get_patch_urls(game_name: str, platform: Platform = Platform.WINDOWS) -> Tuple[str, str]:
+    async def get_patch_urls(game_name: str = "wizard101", platform: Platform = Platform.WINDOWS) -> Tuple[str, str]:
         reader, writer = await asyncio.open_connection(f"patch.us.{game_name}.com", platform.value)
 
         writer.write(b"\x0D\xF0\x24\x00\x00\x00\x00\x00\x08\x01\x20" + bytes(29))
