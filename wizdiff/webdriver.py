@@ -1,7 +1,7 @@
 import asyncio
 import struct
 import gzip
-from typing import Tuple
+from typing import Tuple, Enum
 
 import aiohttp
 from loguru import logger
