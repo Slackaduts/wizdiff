@@ -9,14 +9,19 @@ from loguru import logger
 JOURNAL_ENTRY = "<lll?ll"
 JOURNAL_ENTRY_SIZE = struct.calcsize(JOURNAL_ENTRY)
 
+class Platform(Enum):
+    WINDOWS = 12500
+    MACOS = 12600
+    STEAM = 12700
+
 
 class WebDriver:
     def __init__(self):
         self.session = aiohttp.ClientSession()
 
     @staticmethod
-    async def get_patch_urls(game_name: str = "wizard101") -> Tuple[str, str]:
-        reader, writer = await asyncio.open_connection(f"patch.us.{game_name}.com", 12500)
+    async def get_patch_urls(game_name: str, platform: Platform) -> Tuple[str, str]:
+        reader, writer = await asyncio.open_connection(f"patch.us.{game_name}.com", platform.value)
 
         writer.write(b"\x0D\xF0\x24\x00\x00\x00\x00\x00\x08\x01\x20" + bytes(29))
         await reader.read(4096)  # session offer or whatever
